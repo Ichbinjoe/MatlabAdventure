@@ -28,7 +28,13 @@ SPEED_COL = 9;
 SPEED_BOOST_COL = 10;
 
 % Init
-
+EL = zeros(33,11);
+EL(1,:) = [1 1 1 %Begin player spawn
+for r = 1:1:33
+    for c = 1:1:11
+        
+    end
+end
 % Start Play
 
 % Movement
