@@ -36,11 +36,10 @@ for r = 2:1:33
         if c == 1
             EL(r,c) = randi([4 8]);
         elseif c == 2
-            EL(r,c) = randi(10);
+            EL(r,2) = randi(10);
         elseif c == 3
-            EL(r,c) = randi(10);
+            EL(r,3) = randi(10);
         end
-        
     end
 end
 % Start Play
