@@ -5,14 +5,14 @@ warning('off','all'); % turns off all warning messages
 % Definitions
 
 % Type definitions
-PLAYER = 1;
-MONSTER = 2;
-SUPERMONSTER = 3;
-DOOR = 4;
-HEALTHBOOST = 5;
-SWORD = 6;
-SHIELD = 7;
-BOOT = 8;
+PLAYERT = 1;
+MONSTERT = 2;
+SUPERMONSTERT = 3;
+DOORT = 4;
+HEALTHBOOSTT = 5;
+SWORDT = 6;
+SHIELDT = 7;
+BOOTT = 8;
 
 % Column Definitions
 
