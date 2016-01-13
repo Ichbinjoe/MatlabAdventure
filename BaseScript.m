@@ -34,7 +34,7 @@ EL(2,:) = [2 randi(10) randi(10) 0 0 0 0 100000 0 0]; %Randomly spawns door loca
 for r = 2:1:33
     for c = 1:1:10
         if c == 1
-            EL(r,c) = randi([5:8])
+            EL(r,c) = randi([4 8]);
         elseif c == 2
             EL(r,c) = randi(10);
         elseif c == 3
