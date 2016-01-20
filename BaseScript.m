@@ -47,7 +47,13 @@ for r = 4:1:33
         
     end
 end
-%The use of shuffled x y coordinates leads to some repitition in entity
+% Start Play
+Game = 1;
+while Game == 1
+   if EL(1,8) == 0
+       Game = 0;
+   end
+   %The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
 %oscillate between two x y coordinates in each new instance of a game, it
 %has an 80% chance of being a different type of entity (i.e. a health
@@ -90,8 +96,7 @@ end
 World{EL(2,2), EL(2,3)} = Door;
 World{EL(3,2), EL(3,3)} = Monster-60;
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
-% Start Play
-
+end
 % Movement
 player = EL(find(EL(TYPE)==PLAYERT),:);
 MOBVIEWDISTANCE = 4;
