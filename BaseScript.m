@@ -96,7 +96,7 @@ imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{
 player = EL(find(EL(TYPE)==PLAYERT),:);
 MOBVIEWDISTANCE = 4;
 for i = 1:length(EL)
-    entity = EL(i);
+    entity = EL(i,:);
    if entity(TYPE) == PLAYERT
        %Player movement
        VALID = 0;
