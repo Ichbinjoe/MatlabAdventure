@@ -52,6 +52,8 @@ Game = 1;
 while Game == 1
    if EL(1,8) == 0
        Game = 0;
+   elseif EL(3,8) == 0
+       
    end
    %The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
