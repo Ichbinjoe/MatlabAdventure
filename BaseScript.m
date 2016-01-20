@@ -115,20 +115,16 @@ for i = 1:length(EL)
                case 'uparrow'
                    dx = 1;
                    VALID = 1;
-                   break;
                case 'downarrow'
                    dx = -1;
                    VALID = 1;
-                   break;
                case 'leftarrow'
                    dy = -1;
                    VALID = 1;
-                   break;
                case 'rightarrow'
                    dy = 1;
                    VALID = 1;
-                   break;
-           end
+
            if VALID == 1
                px = dx + player(X_COL);
                py = dx + player(Y_COL);
