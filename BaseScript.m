@@ -47,29 +47,22 @@ for r = 4:1:33
         
     end
 end
-% Start Play
-Game = 1;
-while Game == 1
-   if EL(1,8) == 0
-       Game = 0;
-   elseif EL(3,8) == 0
-       
-   end
+
    %The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
 %oscillate between two x y coordinates in each new instance of a game, it
 %has an 80% chance of being a different type of entity (i.e. a health
 %potion at coordinate (3,4) may be a monster the next match, or something
 %else at coordinate (4,3).
-World{EL(1,2),EL(1,3)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
+World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
 for r = 4:1:33
-    if EL(r,1) == 4
-        while World{EL(r,2), EL(r,3)} ~= Blank
-            EL(r,2) = randi([2 10]);
-            EL(r,3) = randi([1 10]);
+    if EL(r,TYPE) == MOSTERT
+        while World{EL(r,X_COL), EL(r,Y_COL)} ~= Blank
+            EL(r,X_COL) = randi([2 10]);
+            EL(r,Y_COL) = randi([1 10]);
         end
-        World{EL(r,2), EL(r,3)} = Monster; %Checks Entity type for Monster
-    elseif EL(r,1) == 5
+        World{EL(r,X_COL), EL(r,Y_COL)} = Monster; %Checks Entity type for Monster
+    elseif EL(r,TYPE) == HEALTHBOOSTT
         while World{EL(r,2), EL(r,3)} ~= Blank
             EL(r,2) = randi([2 10]);
             EL(r,3) = randi([1 10]);
@@ -97,6 +90,16 @@ for r = 4:1:33
 end
 World{EL(2,2), EL(2,3)} = Door;
 World{EL(3,2), EL(3,3)} = Monster-60;
+
+% Start Play
+Game = 1;
+while Game == 1
+   if EL(1,8) == 0
+       Game = 0;
+   elseif EL(3,8) == 0
+       
+   end
+
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 end
 % Movement
