@@ -126,7 +126,7 @@ for i = 1:length(EL)
                case 'rightarrow'
                    dy = 1;
                    VALID = 1;
-
+           end
            if VALID == 1
                px = dx + player(X_COL);
                py = dx + player(Y_COL);
