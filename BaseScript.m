@@ -15,7 +15,7 @@ SWORDT = 6;
 SHIELDT = 7;
 BOOTT = 8;
 
-IMG = [Player, Door, Monster, Monster, Health, Sword, Shield, Boots];
+IMG = {Player, Door, Monster, Monster, Health, Sword, Shield, Boots};
 
 % Column Definitions
 
@@ -101,7 +101,12 @@ while Game == 1
    elseif EL(3,8) == 0
        
    end
-
+   World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
+for r = 1:10
+    for c = 1:10
+        
+    end
+end
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 end
 % Movement
