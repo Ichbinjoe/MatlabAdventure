@@ -2,7 +2,6 @@
 close all;
 clear all;
 load Adventure   % Loads the board (World - 10x10 cell array) along with a number of different image, shown below.
-figure;imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %display board
 warning('off','all'); % turns off all warning messages
 % Definitions
 
@@ -34,15 +33,16 @@ EL = zeros(33,10); %Preallocating space for the Entity List
 EL(1,:) = [1 1 1 10 0 10 0 10 10 0]; %Begin player spawn (10 attack, health, Speed, Defense is default Placeholder)
 rng('shuffle'); %Seeds the random function based on current time
 EL(2,:) = [2 randi([7 8]) randi([7 8]) 0 0 0 0 100000 0 0]; %Randomly spawns door location
-EL(3,:) = [3 EL(2,2)+randi([1 2]) EL(2,2)+randi([1 2]) EL(1,4) 0 EL(1,6) 0 EL(1,8) EL(1,9) 0]; %Randomly spawns monster location within a 3 coordinate radius of the door. Also indexes into the players health, speed and defense stats to create a metroid-esque evil player (see Ryan for more details) 
-Loc = [1 3;1 4;2 1;2 2;3 1;3 2;3 3;4 1;4 2;5 1;5 2;5 3;6 1;6 2;6 3;6 4;6 5;7 1;7 2;7 3;7 4;8 1;8 2;8 3;9 1;9 2;9 3;10 3;10 4;10 5]; %Creates 33x2 array of X Y values, to prevent repeating coordinates
-Shuffled = Loc(:,randperm(size(Loc,2))); %Shuffles the array while ensuring that Each X value is only assigned a given number 1<Y<10 once
-EL(4:33,2:3) = Shuffled; %Indexes the newly created array of shuffled coordinates into the master entity list
+EL(3,:) = [3 EL(2,2)-1 EL(2,3)-1 EL(1,4) 0 EL(1,6) 0 EL(1,8) EL(1,9) 0]; %Randomly spawns monster location within a 3 coordinate radius of the door. Also indexes into the players health, speed and defense stats to create a metroid-esque evil player (see Ryan for more details) 
 for r = 4:1:33
     for c = 1:1:10
         rng('shuffle'); %randomly seeds entity generation based on current time
         if c == 1
             EL(r,c) = randi([4 8]); %Assigns random entity calues
+        elseif c == 2
+            EL(r,c) = randi([2 10]);
+        elseif c==3
+            EL(r,c) = randi([1 10]);
         end
     end
 end
@@ -52,7 +52,42 @@ end
 %has an 80% chance of being a different type of entity (i.e. a health
 %potion at coordinate (3,4) may be a monster the next match, or something
 %else at coordinate (4,3).
-World{EL(1,2),EL(1,3)} = Player %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
+World{EL(1,2),EL(1,3)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
+for r = 4:1:33
+    if EL(r,1) == 4
+        while World{EL(r,2), EL(r,3)} ~= Blank
+            EL(r,2) = randi([2 10]);
+            EL(r,3) = randi([1 10]);
+        end
+        World{EL(r,2), EL(r,3)} = Monster; %Checks Entity type for Monster
+    elseif EL(r,1) == 5
+        while World{EL(r,2), EL(r,3)} ~= Blank
+            EL(r,2) = randi([2 10]);
+            EL(r,3) = randi([1 10]);
+        end
+        World{EL(r,2), EL(r,3)} = Health; %Checks Entity type for Health
+    elseif EL(r,1) == 6
+        while World{EL(r,2), EL(r,3)} ~= Blank
+            EL(r,2) = randi([2 10]);
+            EL(r,3) = randi([1 10]);
+        end
+        World{EL(r,2), EL(r,3)} = Sword; %Checks Entity type for Sword
+    elseif EL(r,1) == 7
+        while World{EL(r,2), EL(r,3)} ~= Blank
+            EL(r,2) = randi([2 10]);
+            EL(r,3) = randi([1 10]);
+        end
+        World{EL(r,2), EL(r,3)} = Shield; %Checks Entity type for Shield
+    elseif EL(r,1) == 8
+        while World{EL(r,2), EL(r,3)} ~= Blank
+            EL(r,2) = randi([2 10]);
+            EL(r,3) = randi([1 10]);
+        end
+        World{EL(r,2), EL(r,3)} = Boots; %Checks Entity type for Health
+    end
+end
+World{EL(2,2), EL(2,3)} = Door;
+World{EL(3,2), EL(3,3)} = Monster-60;
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 % Start Play
 
