@@ -64,6 +64,41 @@ for i = 1:length(EL)
     entity = EL(i);
    if entity(TYPE) == PLAYERT
        %Player movement
+       VALID = 0;
+       dx = 0;
+       dy = 0;
+       while VALID == 0
+           h = figure(1);
+           waitforbuttonpress;
+           k = get(h,'CurrentKey');
+           switch (k)
+               case 'uparrow'
+                   dx = 1;
+                   VALID = 1;
+                   break;
+               case 'downarrow'
+                   dx = -1;
+                   VALID = 1;
+                   break;
+               case 'leftarrow'
+                   dy = -1;
+                   VALID = 1;
+                   break;
+               case 'rightarrow'
+                   dy = 1;
+                   VALID = 1;
+                   break;
+           end
+           if VALID == 1
+               px = dx + player(X_COL);
+               py = dx + player(Y_COL);
+               if px > 10 || px < 1 || py > 10 || py < 1
+                   VALID = 0;
+               end
+           end
+       end
+       EL(i,X_COL) = EL(i,X_COL) + dx;
+       EL(i,Y_COL) = EL(i,Y_COL) + dy;
    elseif entity(TYPE) == MONSTERT
        %Lets see if a player is around
        ex = entity(X_COL);
@@ -71,33 +106,44 @@ for i = 1:length(EL)
        px = player(X_COL);
        py = player(Y_COL);
        
-       availableLocations = [1 0 0; 0 1 0; -1 0 0; 0 -1 0]; % x y weight
+       availableLocations = [1 0 0; 0 1 0; -1 0 0; 0 -1 0; 0 0 Inf]; % x y weight
        %lower is better
+       %we want to avoid going nowhere unless we have nowhere to go or we
+       %agro to right ther
        
        if ((ex - px) ^ 2 + (ey - py)^2 < 16)
            % need to use distance to weight
-           for i = 1:4
+           for i = 1:5
                availableLocations(i,3) = ((ex+availableLocations (i,1))-px) ^ 2 + ((ey + availableLocations(i,2))-px)^2;
            end
        end
        appropriateLocations = [];
-       for i = 1:4
-           collisions = sum(EL(X_COL)==availableLocations(i,1)+ex & EL(Y_COL) == availableLocations(i,2) + ey & (EL(TYPE) == MONSTERT || EL(TYPE) == DOORT || EL(TYPE) == SUPERMONSTERT));
+       for i = 1:5
+           newx = availableLocations(i,1);
+           newy = availableLocations(i,2);
+           if newx > 10 || newx < 1 || newy > 10 || newy < 1
+               continue;
+           end
+           collisions = sum(EL(X_COL)==newx & EL(Y_COL) == newy & (EL(TYPE) == MONSTERT || EL(TYPE) == DOORT || EL(TYPE) == SUPERMONSTERT));
            if collisions == 0 %no collisions with monsters, doors, or supermosters
                appropriateLocations = [appropriateLocations availableLocations(i)]; %can't prealloc
            end
        end
-       entries = length(appropriateLocations);
+       bestWeight = min(appropriateLocations(:,3));
+
+       bestLocations = appropriateLocations(find(appropriateLocations(3) == bestWeight), :);
+       
+       entries = length(bestLocations);
        movementChoice = [0 0];
        if entries == 0
            continue;
        elseif entries == 1
-           movementChoice = appropriateLocations(1,[1 2]); %extract xy
+           movementChoice = bestLocations(1,[1 2]); %extract xy
        else
-           movementChoice = appropriateLocations(randi(entries),[1 2]); %extract random entry from appropriateLocations xy
+           movementChoice = bestLocations(randi(entries),[1 2]); %extract random entry from appropriateLocations xy
        end
-       EL(i,X_COL) = ex + movementChoice[1];
-       EL(i,Y_COL) = ey + movementChoice[2];
+       EL(i,X_COL) = ex + movementChoice(1);
+       EL(i,Y_COL) = ey + movementChoice(2);
    end
 end
 % Collision
