@@ -56,7 +56,7 @@ end
 %else at coordinate (4,3).
 World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
 for r = 4:1:33
-    if EL(r,TYPE) == MOSTERT
+    if EL(r,TYPE) == MONSTERT
         while World{EL(r,X_COL), EL(r,Y_COL)} ~= Blank
             EL(r,X_COL) = randi([2 10]);
             EL(r,Y_COL) = randi([1 10]);
