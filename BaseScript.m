@@ -169,11 +169,16 @@ for i = 1:length(EL)
                appropriateLocations = [appropriateLocations availableLocations(i)]; %can't prealloc
            end
        end
-       bestWeight = min(appropriateLocations(:,3));
+       if ~isempty(appropriateLocations)
 
-       bestLocations = appropriateLocations(find(appropriateLocations(3) == bestWeight), :);
-       
-       entries = length(bestLocations);
+           bestWeight = min(appropriateLocations(:,3));
+
+           bestLocations = appropriateLocations(find(appropriateLocations(3) == bestWeight), :);
+
+           entries = length(bestLocations);
+       else
+           entries = 0;
+       end
        movementChoice = [0 0];
        if entries == 0
            continue;
