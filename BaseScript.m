@@ -1,4 +1,4 @@
-%%
+
 close all;
 clear all;
 load Adventure   % Loads the board (World - 10x10 cell array) along with a number of different image, shown below.
@@ -44,6 +44,7 @@ for r = 4:1:33
         if c == 1
             EL(r,c) = randi([4 8]); %Assigns random entity calues
         end
+        
     end
 end
 %The use of shuffled x y coordinates leads to some repitition in entity
@@ -57,7 +58,48 @@ imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{
 % Start Play
 
 % Movement
-
+player = EL(find(EL(TYPE)==PLAYERT),:);
+MOBVIEWDISTANCE = 4;
+for i = 1:length(EL)
+    entity = EL(i);
+   if entity(TYPE) == PLAYERT
+       %Player movement
+   elseif entity(TYPE) == MONSTERT
+       %Lets see if a player is around
+       ex = entity(X_COL);
+       ey = entity(Y_COL);
+       px = player(X_COL);
+       py = player(Y_COL);
+       
+       availableLocations = [1 0 0; 0 1 0; -1 0 0; 0 -1 0]; % x y weight
+       %lower is better
+       
+       if ((ex - px) ^ 2 + (ey - py)^2 < 16)
+           % need to use distance to weight
+           for i = 1:4
+               availableLocations(i,3) = ((ex+availableLocations (i,1))-px) ^ 2 + ((ey + availableLocations(i,2))-px)^2;
+           end
+       end
+       appropriateLocations = [];
+       for i = 1:4
+           collisions = sum(EL(X_COL)==availableLocations(i,1)+ex & EL(Y_COL) == availableLocations(i,2) + ey & (EL(TYPE) == MONSTERT || EL(TYPE) == DOORT || EL(TYPE) == SUPERMONSTERT));
+           if collisions == 0 %no collisions with monsters, doors, or supermosters
+               appropriateLocations = [appropriateLocations availableLocations(i)]; %can't prealloc
+           end
+       end
+       entries = length(appropriateLocations);
+       movementChoice = [0 0];
+       if entries == 0
+           continue;
+       elseif entries == 1
+           movementChoice = appropriateLocations(1,[1 2]); %extract xy
+       else
+           movementChoice = appropriateLocations(randi(entries),[1 2]); %extract random entry from appropriateLocations xy
+       end
+       EL(i,X_COL) = ex + movementChoice[1];
+       EL(i,Y_COL) = ey + movementChoice[2];
+   end
+end
 % Collision
 
 % Combat Start
