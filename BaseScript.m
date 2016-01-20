@@ -15,6 +15,8 @@ SWORDT = 6;
 SHIELDT = 7;
 BOOTT = 8;
 
+IMG = [Player, Door, Monster, Monster, Health, Sword, Shield, Boots];
+
 % Column Definitions
 
 TYPE = 1;
