@@ -58,40 +58,14 @@ end
 %else at coordinate (4,3).
 World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
 for r = 4:1:33
-    if EL(r,TYPE) == MONSTERT
-        while World{EL(r,X_COL), EL(r,Y_COL)} ~= Blank
+        while World{EL(r,2), EL(r,3)} ~= Blank %Checks to make sure the initial spawn point is blank, and creates new spawn point if it isn't
             EL(r,X_COL) = randi([2 10]);
             EL(r,Y_COL) = randi([1 10]);
         end
-        World{EL(r,X_COL), EL(r,Y_COL)} = Monster; %Checks Entity type for Monster
-    elseif EL(r,TYPE) == HEALTHBOOSTT
-        while World{EL(r,2), EL(r,3)} ~= Blank
-            EL(r,2) = randi([2 10]);
-            EL(r,3) = randi([1 10]);
-        end
-        World{EL(r,2), EL(r,3)} = Health; %Checks Entity type for Health
-    elseif EL(r,1) == 6
-        while World{EL(r,2), EL(r,3)} ~= Blank
-            EL(r,2) = randi([2 10]);
-            EL(r,3) = randi([1 10]);
-        end
-        World{EL(r,2), EL(r,3)} = Sword; %Checks Entity type for Sword
-    elseif EL(r,1) == 7
-        while World{EL(r,2), EL(r,3)} ~= Blank
-            EL(r,2) = randi([2 10]);
-            EL(r,3) = randi([1 10]);
-        end
-        World{EL(r,2), EL(r,3)} = Shield; %Checks Entity type for Shield
-    elseif EL(r,1) == 8
-        while World{EL(r,2), EL(r,3)} ~= Blank
-            EL(r,2) = randi([2 10]);
-            EL(r,3) = randi([1 10]);
-        end
-        World{EL(r,2), EL(r,3)} = Boots; %Checks Entity type for Health
-    end
+        World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Checks entity location on entity list, then indexes into the image master matrix for the entities image
 end
-World{EL(2,2), EL(2,3)} = Door;
-World{EL(3,2), EL(3,3)} = Monster-60;
+World{EL(2,X_COL), EL(2,Y_COL)} = Door;
+World{EL(3,X_COL), EL(3,Y_COL)} = Monster-60;
 
 % Start Play
 Game = 1;
@@ -108,7 +82,7 @@ for r = 1:10
     end
 end
 for r = 1:1:size(EL)
-    World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,1)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
+    World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
 end
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 % Movement
