@@ -104,8 +104,11 @@ while Game == 1
    World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
 for r = 1:10
     for c = 1:10
-        
+        World{r,c} = Blank; %Clears all world tiles in order for entity locations to be reset
     end
+end
+for r = 1:1:size(EL)
+    World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,1)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
 end
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 end
