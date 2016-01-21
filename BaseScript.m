@@ -111,7 +111,6 @@ for r = 1:1:size(EL)
     World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,1)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
 end
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
-end
 % Movement
 player = EL(find(EL(TYPE)==PLAYERT),:);
 MOBVIEWDISTANCE = 4;
@@ -201,6 +200,7 @@ for i = 1:length(EL)
        EL(i,X_COL) = ex + movementChoice(1);
        EL(i,Y_COL) = ey + movementChoice(2);
    end
+end
 end
 % Collision
 
