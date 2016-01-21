@@ -83,6 +83,9 @@ for r = 1:10
 end
 for r = 1:1:size(EL)
     World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
+    if ((EL(r,X_COL) > EL(PLAYERT,X_COL) + 1) || (EL(r,X_COL) < EL(PLAYERT,X_COL) - 1)) || ((EL(r,Y_COL) > EL(PLAYERT,Y_COL) + 1) || (EL(r,Y_COL) < EL(PLAYERT,Y_COL) - 1)) %Checks to see if the updated entity is within a given radius around the Player, and once exceeded, despawns the entity
+        World{EL(r,X_COL), EL(r,Y_COL)} = Blank;
+    end
 end
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 % Movement
