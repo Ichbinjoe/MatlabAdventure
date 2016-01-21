@@ -126,10 +126,10 @@ for i = 1:length(EL)
            waitforbuttonpress;
            k = get(h,'CurrentKey');
            switch (k)
-               case 'uparrow'
+               case 'downarrow'
                    dx = 1;
                    VALID = 1;
-               case 'downarrow'
+               case 'uparrow'
                    dx = -1;
                    VALID = 1;
                case 'leftarrow'
