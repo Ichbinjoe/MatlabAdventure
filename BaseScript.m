@@ -16,7 +16,6 @@ SHIELDT = 7;
 BOOTT = 8;
 
 IMG = {Player, Door, Monster, Monster, Health, Sword, Shield, Boots};
-
 % Column Definitions
 
 TYPE = 1;
@@ -40,7 +39,21 @@ for r = 4:1:33
     for c = 1:1:10
         rng('shuffle'); %randomly seeds entity generation based on current time
         if c == 1
-            EL(r,c) = randi([4 8]); %Assigns random entity calues
+            EL(r,c) = randi([4 8]); %Assigns random entity values
+            if EL(r,c) == MONSTERT
+                EL(r,MONSTERT) = randi([10 20]);
+                EL(r,8) = randi([10 20]);
+                EL(r,DEFENSE_COL) = randi([10 20]);
+                EL(r,SPEED_COL) = randi([10 20]);
+            elseif EL(r,c) == HEALTHBOOSTT
+                EL(r,8) = randi([1 10]);
+            elseif EL(r,c) == SWORDT
+                EL(r,ATTACK_BOOST_COL) = randi([2 10]);
+            elseif EL(r,c) == SHIELDT
+                EL(r,DEFENSE_BOOST_COL) = randi([2 10]);
+            elseif EL(r,c) == BOOTT
+                EL(r,SPEED_BOOST_COL) = randi([2 10]);
+            end
         elseif c == 2
             EL(r,c) = randi([2 10]);
         elseif c==3
@@ -49,7 +62,15 @@ for r = 4:1:33
         
     end
 end
-
+[y Fs] = audioread('Theme.mp3'); % Reads file – must be in current directory
+Theme = audioplayer(.3*y,Fs);  
+% Saves as song using sampling rate, Fs
+[y Fs] = audioread('Sword.mp3');
+Sword = audioplayer(.1*y,Fs);
+[y Fs] = audioread('Shield.wav');
+Shield = audioplayer(.1*y,Fs);
+[y Fs] = audioread('Health.wav');
+Health = audioplayer(.5*y,Fs);
    %The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
 %oscillate between two x y coordinates in each new instance of a game, it
@@ -69,10 +90,13 @@ World{EL(3,X_COL), EL(3,Y_COL)} = Monster-60;
 
 % Start Play
 Game = 1;
+play(Theme)   % Plays the song
 while Game == 1
-   if EL(1,8) == 0
+   clc;
+   disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
+   if EL(PLAYERT,HEALTH_COL) == 0
        Game = 0;
-   elseif EL(3,8) == 0
+   elseif EL(SUPERMONSTERT,HEALTH_COL) == 0
        
    end
    World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
@@ -88,6 +112,41 @@ for r = 1:1:size(EL)
     World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
     if ((EL(r,X_COL) > EL(PLAYERT,X_COL) + 1) || (EL(r,X_COL) < EL(PLAYERT,X_COL) - 1)) || ((EL(r,Y_COL) > EL(PLAYERT,Y_COL) + 1) || (EL(r,Y_COL) < EL(PLAYERT,Y_COL) - 1)) %Checks to see if the updated entity is within a given radius around the Player, and once exceeded, despawns the entity
         World{EL(r,X_COL), EL(r,Y_COL)} = Blank-255;
+    end
+    for row = 2:1:size(EL)
+        if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)
+            %Insert Combat Block Here
+            if EL(row,TYPE) == 5
+                play(Health)
+                PreviousHealth = EL(PLAYERT, HEALTH_COL);
+                EL(PLAYERT, HEALTH_COL) = EL(PLAYERT, HEALTH_COL) + EL(row,HEALTH_COL); %Checks pickup type for Health, adds the random health value to the player health column (keeps it less than 20)
+                if EL(PLAYERT, HEALTH_COL) > 20
+                    EL(PLAYERT, HEALTH_COL) = 20;
+                end
+                fprintf('Health Vat added %i health!',EL(PLAYERT,HEALTH_COL) - PreviousHealth)
+            elseif EL(row,TYPE) == 6
+                PreviousAttack = EL(PLAYERT,ATTACK_BOOST_COL);
+                play(Sword)
+                EL(PLAYERT, ATTACK_BOOST_COL) = EL(PLAYERT, ATTACK_BOOST_COL) + EL(row,ATTACK_BOOST_COL); %Checks pickup type for sword, adds the random value to the player attack boost column, which is then added to the attack (keeps it less than 20)
+                EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + EL(PLAYERT,ATTACK_BOOST_COL);
+                fprintf('Sword added %i attack!',EL(PLAYERT,ATTACK_BOOST_COL) - PreviousAttack)
+            elseif EL(row,TYPE) == 7
+                PreviousDefense = EL(PLAYERT, DEFENSE_BOOST_COL);
+                play(Shield)
+                EL(PLAYERT, DEFENSE_BOOST_COL) = EL(PLAYERT, DEFENSE_BOOST_COL) + EL(row,DEFENSE_BOOST_COL); %Checks pickup type for shield, adds the random value to the player defense boost column, which is then added to the player defense (keeps it less than 20)
+                EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + EL(PLAYERT,DEFENSE_BOOST_COL);
+                fprintf('Shield added %i defense!',EL(PLAYERT,DEFENSE_BOOST_COL) - PreviousDefense)
+            elseif EL(row,TYPE) == 8
+                PreviousSpeed = EL(PLAYERT, SPEED_BOOST_COL);
+                EL(PLAYERT, SPEED_BOOST_COL) = EL(PLAYERT, SPEED_BOOST_COL) + EL(row,SPEED_BOOST_COL); %Checks pickup type for boots, adds the random value to the player speed boost column column, which is then added to the player speed column (keeps it less than 20)
+                EL(PLAYERT, SPEED_COL) = EL(PLAYERT, SPEED_COL) + EL(PLAYERT,SPEED_BOOST_COL);
+                fprintf('Boots added %i speed!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)
+            end
+            World{EL(row,X_COL), EL(row,Y_COL)} = Blank;
+            World{EL(row,X_COL), EL(row,Y_COL)} = IMG{PLAYERT};
+            EL(row, X_COL) = 11;
+            EL(row,Y_COL) = 11;
+        end
     end
 end
 imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
@@ -139,7 +198,7 @@ for i = 1:length(EL)
        availableLocations = [1 0 0; 0 1 0; -1 0 0; 0 -1 0; 0 0 Inf]; % x y weight
        %lower is better
        %we want to avoid going nowhere unless we have nowhere to go or we
-       %agro to right ther
+       %agro to right there
        
        if ((ex - px) ^ 2 + (ey - py)^2 < 16)
            % need to use distance to weight
@@ -182,8 +241,7 @@ for i = 1:length(EL)
    end
 end
 end
-% Collision
-
+stop(Theme) % Stops the song
 % Combat Start
 
 % Combat End
