@@ -241,7 +241,7 @@ for i = 1:length(EL)
                appropriateLocations(max,:) = availableLocations(j,:);
            end
        end
-       if max == 0
+       if max ~= 0
 
            weights = appropriateLocations(1:max,3);
            bestWeight = min(weights);
