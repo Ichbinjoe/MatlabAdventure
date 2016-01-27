@@ -97,7 +97,9 @@ while Game == 1
    if EL(PLAYERT,HEALTH_COL) == 0
        Game = 0;
    elseif EL(SUPERMONSTERT,HEALTH_COL) == 0
-       
+       Game = 0;
+   elseif (EL(PLAYERT,X_COL) == EL(DOORT,X_COL)) && (EL(PLAYERT,Y_COL) == EL(DOORT,Y_COL))
+       game = 0;
    end
    World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
 for r = 1:10
