@@ -62,7 +62,7 @@ for r = 4:1:33
         
     end
 end
-[y Fs] = audioread('Theme.mp3'); % Reads file – must be in current directory
+[y Fs] = audioread('Theme.mp3'); % Reads file ï¿½ must be in current directory
 Theme = audioplayer(.3*y,Fs);  
 % Saves as song using sampling rate, Fs
 [y Fs] = audioread('Sword.mp3');
@@ -71,7 +71,7 @@ Sword = audioplayer(.1*y,Fs);
 Shield = audioplayer(.1*y,Fs);
 [y Fs] = audioread('Health.wav');
 Health = audioplayer(.5*y,Fs);
-   %The use of shuffled x y coordinates leads to some repitition in entity
+%The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
 %oscillate between two x y coordinates in each new instance of a game, it
 %has an 80% chance of being a different type of entity (i.e. a health
@@ -206,25 +206,27 @@ for i = 1:length(EL)
                availableLocations(i,3) = ((ex+availableLocations (i,1))-px) ^ 2 + ((ey + availableLocations(i,2))-px)^2;
            end
        end
-       appropriateLocations = [];
+       appropriateLocations = zeros([5 3]);
+       max = 0;
        for i = 1:5
-           newx = availableLocations(i,1);
-           newy = availableLocations(i,2);
+           newx = availableLocations(i,1) + ex;
+           newy = availableLocations(i,2) + ey;
            if newx > 10 || newx < 1 || newy > 10 || newy < 1
                continue;
            end
            collisions = sum(EL(X_COL)==newx & EL(Y_COL) == newy & (EL(TYPE) == MONSTERT || EL(TYPE) == DOORT || EL(TYPE) == SUPERMONSTERT));
            if collisions == 0 %no collisions with monsters, doors, or supermosters
-               appropriateLocations = [appropriateLocations availableLocations(i)]; %can't prealloc
+               max = max + 1;
+               appropriateLocations(max,:) = availableLocations(i,:);
            end
        end
        if ~isempty(appropriateLocations)
 
-           bestWeight = min(appropriateLocations(:,3));
+           bestWeight = min(appropriateLocations(1:max,3));
+           bestWeightPositions = find(appropriateLocations(3) == bestWeight)
+           bestLocations = appropriateLocations(bestWeightPositions, :);
 
-           bestLocations = appropriateLocations(find(appropriateLocations(3) == bestWeight), :);
-
-           entries = length(bestLocations);
+           entries = length(bestWeightPositions);
        else
            entries = 0;
        end
