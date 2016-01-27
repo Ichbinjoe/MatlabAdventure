@@ -1,4 +1,5 @@
-
+GameMaster = 1;
+while GameMaster == 1;
 close all;
 clear all;
 load Adventure   % Loads the board (World - 10x10 cell array) along with a number of different image, shown below.
@@ -36,7 +37,7 @@ EL = zeros(33,10); %Preallocating space for the Entity List
 EL(1,:) = [1 1 1 10 0 10 0 10 10 0]; %Begin player spawn (10 attack, health, Speed, Defense is default Placeholder)
 rng('shuffle'); %Seeds the random function based on current time
 EL(2,:) = [2 randi([7 8]) randi([7 8]) 0 0 0 0 100000 0 0]; %Randomly spawns door location
-EL(3,:) = [3 EL(2,2)-1 EL(2,3)-1 EL(1,4) 0 EL(1,6) 0 EL(1,8) EL(1,9) 0]; %Randomly spawns monster location within a 3 coordinate radius of the door. Also indexes into the players health, speed and defense stats to create a metroid-esque evil player (see Ryan for more details) 
+EL(3,:) = [3 EL(2,X_COL)-1 EL(2,Y_COL)-1 EL(1,4) 0 EL(1,6) 0 EL(1,8) EL(1,9) 0]; %Randomly spawns monster location within a 3 coordinate radius of the door. Also indexes into the players health, speed and defense stats to create a metroid-esque evil player (see Ryan for more details) 
 for r = 4:1:33
     for c = 1:1:10
         rng('shuffle'); %randomly seeds entity generation based on current time
@@ -90,7 +91,6 @@ for r = 4:1:33
         World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Checks entity location on entity list, then indexes into the image master matrix for the entities image
 end
 World{EL(2,X_COL), EL(2,Y_COL)} = Door;
-World{EL(3,X_COL), EL(3,Y_COL)} = Monster-60;
 
 % Start Play
 Game = 1;
@@ -102,10 +102,8 @@ while Game == 1
    disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
    if EL(PLAYERT,HEALTH_COL) == 0
        Game = 0;
-   elseif EL(SUPERMONSTERT,HEALTH_COL) == 0
+   elseif (EL(PLAYERT,X_COL) == EL(DOORT,X_COL)) && (EL(PLAYERT,Y_COL) == EL(DOORT,Y_COL)) && EL(SUPERMONSTERT,HEALTH_COL) == 0
        Game = 0;
-   elseif (EL(PLAYERT,X_COL) == EL(DOORT,X_COL)) && (EL(PLAYERT,Y_COL) == EL(DOORT,Y_COL))
-       game = 0;
    end
    World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
 for r = 1:10
@@ -278,6 +276,11 @@ end
 if SOUND == 1
     stop(Theme) % Stops the song
 end
+close all;
+GameMaster = menu('Congratulations! You won the game! Would you like to play again?','Yes','No');
+end
+clear all;
+clc;
 % Combat Start
 
 % Combat End
