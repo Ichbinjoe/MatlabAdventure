@@ -106,19 +106,11 @@ while Game == 1
        Game = 0;
    end
    World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
-for r = 1:10
-    for c = 1:10
-        World{r,c} = Blank; %Clears all world tiles in order for entity locations to be reset
-        if (r > EL(PLAYERT,X_COL) + 1 || r < EL(PLAYERT,X_COL)-1) || (c > EL(PLAYERT,Y_COL) + 1 || c < EL(PLAYERT,Y_COL) - 1)
-            World{r,c} = Blank-255; %Sets all blank blocks outside the vision radius of the player to black
-        end
-    end
-end
 playerx = EL(1, X_COL);
 playery = EL(1, Y_COL);
 for x = 1:10
     for y = 1:10
-        if 0 && (x > playerx + 1 || x < playerx - 1 || y > playery + 1 || y < playery -1)
+        if (x > playerx + 1 || x < playerx - 1 || y > playery + 1 || y < playery -1)
             World{x,y} = Blank-255;
         else
             matchingEntries = EL(:,X_COL) == x & EL(:,Y_COL) == y;
