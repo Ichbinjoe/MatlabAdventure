@@ -5,6 +5,8 @@ load Adventure   % Loads the board (World - 10x10 cell array) along with a numbe
 warning('off','all'); % turns off all warning messages
 % Definitions
 
+SOUND = 0;
+
 % Type definitions
 PLAYERT = 1;
 DOORT = 2;
@@ -62,15 +64,17 @@ for r = 4:1:33
         
     end
 end
-[y Fs] = audioread('Theme.mp3'); % Reads file � must be in current directory
-Theme = audioplayer(.3*y,Fs);  
-% Saves as song using sampling rate, Fs
-[y Fs] = audioread('Sword.mp3');
-Sword = audioplayer(.1*y,Fs);
-[y Fs] = audioread('Shield.wav');
-Shield = audioplayer(.1*y,Fs);
-[y Fs] = audioread('Health.wav');
-Health = audioplayer(.5*y,Fs);
+if SOUND == 1
+    [y Fs] = audioread('Theme.mp3'); % Reads file � must be in current directory
+    Theme = audioplayer(.3*y,Fs);  
+    % Saves as song using sampling rate, Fs
+    [y Fs] = audioread('Sword.mp3');
+    Sword = audioplayer(.1*y,Fs);
+    [y Fs] = audioread('Shield.wav');
+    Shield = audioplayer(.1*y,Fs);
+    [y Fs] = audioread('Health.wav');
+    Health = audioplayer(.5*y,Fs);
+end
 %The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
 %oscillate between two x y coordinates in each new instance of a game, it
@@ -90,7 +94,9 @@ World{EL(3,X_COL), EL(3,Y_COL)} = Monster-60;
 
 % Start Play
 Game = 1;
-play(Theme)   % Plays the song
+if SOUND == 1
+    play(Theme)   % Plays the song
+end
 while Game == 1
    clc;
    disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
@@ -111,15 +117,18 @@ for r = 1:10
     end
 end
 for r = 1:1:size(EL)
-    World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
     if ((EL(r,X_COL) > EL(PLAYERT,X_COL) + 1) || (EL(r,X_COL) < EL(PLAYERT,X_COL) - 1)) || ((EL(r,Y_COL) > EL(PLAYERT,Y_COL) + 1) || (EL(r,Y_COL) < EL(PLAYERT,Y_COL) - 1)) %Checks to see if the updated entity is within a given radius around the Player, and once exceeded, despawns the entity
         World{EL(r,X_COL), EL(r,Y_COL)} = Blank-255;
+    else
+        World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
     end
     for row = 2:1:size(EL)
         if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)
             %Insert Combat Block Here
             if EL(row,TYPE) == 5
-                play(Health)
+                if SOUND == 1
+                    play(Health)
+                end
                 PreviousHealth = EL(PLAYERT, HEALTH_COL);
                 EL(PLAYERT, HEALTH_COL) = EL(PLAYERT, HEALTH_COL) + EL(row,HEALTH_COL); %Checks pickup type for Health, adds the random health value to the player health column (keeps it less than 20)
                 if EL(PLAYERT, HEALTH_COL) > 20
@@ -128,13 +137,17 @@ for r = 1:1:size(EL)
                 fprintf('Health Vat added %i health!',EL(PLAYERT,HEALTH_COL) - PreviousHealth)
             elseif EL(row,TYPE) == 6
                 PreviousAttack = EL(PLAYERT,ATTACK_BOOST_COL);
-                play(Sword)
+                if SOUND == 1
+                    play(Sword)
+                end
                 EL(PLAYERT, ATTACK_BOOST_COL) = EL(PLAYERT, ATTACK_BOOST_COL) + EL(row,ATTACK_BOOST_COL); %Checks pickup type for sword, adds the random value to the player attack boost column, which is then added to the attack (keeps it less than 20)
                 EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + EL(PLAYERT,ATTACK_BOOST_COL);
                 fprintf('Sword added %i attack!',EL(PLAYERT,ATTACK_BOOST_COL) - PreviousAttack)
             elseif EL(row,TYPE) == 7
                 PreviousDefense = EL(PLAYERT, DEFENSE_BOOST_COL);
-                play(Shield)
+                if SOUND == 1
+                    play(Shield)
+                end
                 EL(PLAYERT, DEFENSE_BOOST_COL) = EL(PLAYERT, DEFENSE_BOOST_COL) + EL(row,DEFENSE_BOOST_COL); %Checks pickup type for shield, adds the random value to the player defense boost column, which is then added to the player defense (keeps it less than 20)
                 EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + EL(PLAYERT,DEFENSE_BOOST_COL);
                 fprintf('Shield added %i defense!',EL(PLAYERT,DEFENSE_BOOST_COL) - PreviousDefense)
@@ -245,7 +258,9 @@ for i = 1:length(EL)
    end
 end
 end
-stop(Theme) % Stops the song
+if SOUND == 1
+    stop(Theme) % Stops the song
+end
 % Combat Start
 
 % Combat End
