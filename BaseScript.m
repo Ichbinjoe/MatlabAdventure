@@ -116,12 +116,28 @@ for r = 1:10
         end
     end
 end
-for r = 1:1:size(EL)
-    if ((EL(r,X_COL) > EL(PLAYERT,X_COL) + 1) || (EL(r,X_COL) < EL(PLAYERT,X_COL) - 1)) || ((EL(r,Y_COL) > EL(PLAYERT,Y_COL) + 1) || (EL(r,Y_COL) < EL(PLAYERT,Y_COL) - 1)) %Checks to see if the updated entity is within a given radius around the Player, and once exceeded, despawns the entity
-        World{EL(r,X_COL), EL(r,Y_COL)} = Blank-255;
-    else
-        World{EL(r,X_COL), EL(r,Y_COL)} = IMG{EL(r,TYPE)}; %Indexes into the world at the updated location in the entity list, and respawns in the specified entity in its new location
+playerx = EL(1, X_COL);
+playery = EL(1, Y_COL);
+for x = 1:10
+    for y = 1:10
+        if 0 && (x > playerx + 1 || x < playerx - 1 || y > playery + 1 || y < playery -1)
+            World{x,y} = Blank-255;
+        else
+            matchingEntries = EL(:,X_COL) == x & EL(:,Y_COL) == y;
+            if sum(matchingEntries) == 0
+                World{x,y} = Blank;
+            else
+                entityInCell = find(matchingEntries == 1);
+                etype = EL(entityInCell,TYPE);
+                World{x,y} = IMG{etype};
+            end
+        end
     end
+end
+imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
+    
+
+for r = 1:1:size(EL)
     for row = 2:1:size(EL)
         if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)
             %Insert Combat Block Here
@@ -164,9 +180,8 @@ for r = 1:1:size(EL)
         end
     end
 end
-imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{7,:};World{8,:};World{9,:};World{10,:}]); %displays updated board with Player entity displayed in assigned location
 % Movement
-player = EL(find(EL(TYPE)==PLAYERT),:);
+player = EL(1,:);
 MOBVIEWDISTANCE = 4;
 for i = 1:length(EL)
     entity = EL(i,:);
@@ -215,30 +230,32 @@ for i = 1:length(EL)
        %we want to avoid going nowhere unless we have nowhere to go or we
        %agro to right there
        
-       if ((ex - px) ^ 2 + (ey - py)^2 < 16)
+       if 1 || ((ex - px)^2 + (ey - py)^2 < 16)
            % need to use distance to weight
-           for i = 1:5
-               availableLocations(i,3) = ((ex+availableLocations (i,1))-px) ^ 2 + ((ey + availableLocations(i,2))-px)^2;
+           for j = 1:5
+               availableLocations(j,3) = ((ex+availableLocations (j,1))-px) ^ 2 + ((ey + availableLocations(j,2))-px)^2;
            end
        end
        appropriateLocations = zeros([5 3]);
        max = 0;
-       for i = 1:5
-           newx = availableLocations(i,1) + ex;
-           newy = availableLocations(i,2) + ey;
+       for j = 1:5
+           newx = availableLocations(j,1) + ex;
+           newy = availableLocations(j,2) + ey;
            if newx > 10 || newx < 1 || newy > 10 || newy < 1
                continue;
            end
-           collisions = sum(EL(X_COL)==newx & EL(Y_COL) == newy & (EL(TYPE) == MONSTERT || EL(TYPE) == DOORT || EL(TYPE) == SUPERMONSTERT));
-           if collisions == 0 %no collisions with monsters, doors, or supermosters
+           collisions = (EL(X_COL)==newx & EL(Y_COL) == newy & (EL(TYPE) == MONSTERT || EL(TYPE) == DOORT || EL(TYPE) == SUPERMONSTERT));
+           collisions(i) = 0; %don't care if colides with self
+           if sum(collisions) == 0 %no collisions with monsters, doors, or supermosters
                max = max + 1;
-               appropriateLocations(max,:) = availableLocations(i,:);
+               appropriateLocations(max,:) = availableLocations(j,:);
            end
        end
        if ~isempty(appropriateLocations)
 
-           bestWeight = min(appropriateLocations(1:max,3));
-           bestWeightPositions = find(appropriateLocations(3) == bestWeight)
+           weights = appropriateLocations(1:max,3);
+           bestWeight = min(weights);
+           bestWeightPositions = find(appropriateLocations(:,3) == bestWeight);
            bestLocations = appropriateLocations(bestWeightPositions, :);
 
            entries = length(bestWeightPositions);
