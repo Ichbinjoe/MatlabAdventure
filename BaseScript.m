@@ -131,6 +131,40 @@ for r = 1:1:size(EL)
     for row = 2:1:size(EL)
         if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)
             %Insert Combat Block Here
+            while EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT
+                choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
+                chance = randi([0 20]);
+                if choice == 1 && chance > 4 %60 percent chance of dealing a good hit
+                    damagedealt = (randi([0 20])/EL(PLAYERT,ATTACK_COL));
+                    EL(row,HEALTH_COL) = EL(row,HEALTH_COL) - damagedealt;
+                    fprintf('You landed a great hit against the monster and did %0.2f damage! Monster health: %0.2f',damagedealt,EL(row,HEALTH_COL));
+                elseif choice == 1 && chance < 4 %20 percent chance of a glancing shot
+                    damagedealt = (chance/EL(PLAYERT,ATTACK_COL));
+                    EL(row,HEALTH_COL) = EL(row,HEALTH_COL) - damagedealt;
+                    fprintf('You stumbled as you swung and did %0.2f damage! Monster health: %0.2f',damagedealt,EL(row,HEALTH_COL));
+                elseif choice == 1 && chance < 2 %20 percent chance of missing entirely
+                    damagedealt = 0;
+                    fprintf('What an amatuer! You missed and did %0.2f damage! Monster health: %0.2f',damagedealt,EL(row,HEALTH_COL));
+                elseif choice == 2 && chance > 4
+                    damagetaken = (randi([0 20])/EL(PLAYERT,DEFENSE_COL));
+                    EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
+                    fprintf('You planted your shield firmly and protected yourself against a brutal blow! Your shield lost %0.2f durability',damagedealt,EL(row,DEFENSE_COL));
+                elseif choice == 2 && chance < 4
+                    damagetaken = (chance/EL(PLAYERT,ATTACK_COL));
+                    EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
+                    EL(row,Health_COL) = EL(row,HEALTH_COL)- .25*damagetaken;\
+                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f',damagetaken,.5*damagetaken);
+               elseif choice == 2 && chance < 2
+                    damagetaken = (chance/EL(PLAYERT,ATTACK_COL));
+                    EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
+                    EL(row,Health_COL) = EL(row,HEALTH_COL)- .75*damagetaken;
+                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f',damagetaken,.5*damagetaken);
+                    
+                elseif
+                    
+                end
+    
+            end
             if EL(row,TYPE) == 5
                 if SOUND == 1
                     play(Health)
@@ -148,6 +182,10 @@ for r = 1:1:size(EL)
                 end
                 EL(PLAYERT, ATTACK_BOOST_COL) = EL(PLAYERT, ATTACK_BOOST_COL) + EL(row,ATTACK_BOOST_COL); %Checks pickup type for sword, adds the random value to the player attack boost column, which is then added to the attack (keeps it less than 20)
                 EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + EL(PLAYERT,ATTACK_BOOST_COL);
+                EL(PLAYERT,ATTACK_BOOST_COL) = 0;
+                if EL(PLAYERT, ATTACK_COL) > 20
+                    EL(PLAYERT, ATTACK_COL) = 20;
+                end
                 fprintf('Sword added %i attack!',EL(PLAYERT,ATTACK_BOOST_COL) - PreviousAttack)
             elseif EL(row,TYPE) == 7
                 PreviousDefense = EL(PLAYERT, DEFENSE_BOOST_COL);
@@ -156,12 +194,15 @@ for r = 1:1:size(EL)
                 end
                 EL(PLAYERT, DEFENSE_BOOST_COL) = EL(PLAYERT, DEFENSE_BOOST_COL) + EL(row,DEFENSE_BOOST_COL); %Checks pickup type for shield, adds the random value to the player defense boost column, which is then added to the player defense (keeps it less than 20)
                 EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + EL(PLAYERT,DEFENSE_BOOST_COL);
+                EL(PLAYERT,DEFENSE_BOOST_COL) = 0;
+                if EL(PLAYERT, DEFENSE_COL) > 20
+                    EL(PLAYERT, DEFENSE_COL) = 20;
+                end
                 fprintf('Shield added %i defense!',EL(PLAYERT,DEFENSE_BOOST_COL) - PreviousDefense)
             elseif EL(row,TYPE) == 8
                 PreviousSpeed = EL(PLAYERT, SPEED_BOOST_COL);
                 EL(PLAYERT, SPEED_BOOST_COL) = EL(PLAYERT, SPEED_BOOST_COL) + EL(row,SPEED_BOOST_COL); %Checks pickup type for boots, adds the random value to the player speed boost column column, which is then added to the player speed column (keeps it less than 20)
-                EL(PLAYERT, SPEED_COL) = EL(PLAYERT, SPEED_COL) + EL(PLAYERT,SPEED_BOOST_COL);
-                fprintf('Boots added %i speed!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)
+                fprintf('You picked up %i speed boost to use in battle!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)
             end
             World{EL(row,X_COL), EL(row,Y_COL)} = Blank;
             World{EL(row,X_COL), EL(row,Y_COL)} = IMG{PLAYERT};
