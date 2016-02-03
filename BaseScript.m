@@ -49,13 +49,13 @@ for r = 4:1:33
                 EL(r,DEFENSE_COL) = randi([5 10]);
                 EL(r,SPEED_COL) = randi([5 10]);
             elseif EL(r,c) == HEALTHBOOSTT
-                EL(r,8) = randi([5 10]);
+                EL(r,8) = 5;
             elseif EL(r,c) == SWORDT
-                EL(r,ATTACK_BOOST_COL) = randi([5 10]);
+                EL(r,ATTACK_BOOST_COL) = 5;
             elseif EL(r,c) == SHIELDT
-                EL(r,DEFENSE_BOOST_COL) = randi([5 10]);
+                EL(r,DEFENSE_BOOST_COL) = 5;
             elseif EL(r,c) == BOOTT
-                EL(r,SPEED_BOOST_COL) = randi([5 10]);
+                EL(r,SPEED_BOOST_COL) = 5;
             end
         elseif c == 2
             EL(r,c) = randi([2 10]);
