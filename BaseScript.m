@@ -209,8 +209,7 @@ for r = 1:1:size(EL)
                     play(Sword)
                 end
                 EL(PLAYERT, ATTACK_BOOST_COL) = EL(PLAYERT, ATTACK_BOOST_COL) + EL(row,ATTACK_BOOST_COL); %Checks pickup type for sword, adds the random value to the player attack boost column, which is then added to the attack (keeps it less than 20)
-                EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + EL(PLAYERT,ATTACK_BOOST_COL);
-                EL(PLAYERT,ATTACK_BOOST_COL) = 0;
+                EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + (EL(PLAYERT,ATTACK_BOOST_COL)-PreviousAttack);
                 if EL(PLAYERT, ATTACK_COL) > 20
                     EL(PLAYERT, ATTACK_COL) = 20;
                 end
@@ -221,8 +220,7 @@ for r = 1:1:size(EL)
                     play(Shield)
                 end
                 EL(PLAYERT, DEFENSE_BOOST_COL) = EL(PLAYERT, DEFENSE_BOOST_COL) + EL(row,DEFENSE_BOOST_COL); %Checks pickup type for shield, adds the random value to the player defense boost column, which is then added to the player defense (keeps it less than 20)
-                EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + EL(PLAYERT,DEFENSE_BOOST_COL);
-                EL(PLAYERT,DEFENSE_BOOST_COL) = 0;
+                EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + (EL(PLAYERT,DEFENSE_BOOST_COL)-PreviousDefense);
                 if EL(PLAYERT, DEFENSE_COL) > 20
                     EL(PLAYERT, DEFENSE_COL) = 20;
                 end
