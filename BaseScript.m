@@ -44,22 +44,22 @@ for r = 4:1:33
         if c == 1
             EL(r,c) = randi([4 8]); %Assigns random entity values
             if EL(r,c) == MONSTERT
-                EL(r,MONSTERT) = randi([10 20]);
-                EL(r,8) = randi([10 20]);
-                EL(r,DEFENSE_COL) = randi([10 20]);
-                EL(r,SPEED_COL) = randi([10 20]);
+                EL(r,MONSTERT) = randi([5 10]);
+                EL(r,8) = randi([5 10]);
+                EL(r,DEFENSE_COL) = randi([5 10]);
+                EL(r,SPEED_COL) = randi([5 10]);
             elseif EL(r,c) == HEALTHBOOSTT
-                EL(r,8) = randi([1 10]);
+                EL(r,8) = randi([5 10]);
             elseif EL(r,c) == SWORDT
-                EL(r,ATTACK_BOOST_COL) = randi([2 10]);
+                EL(r,ATTACK_BOOST_COL) = randi([5 10]);
             elseif EL(r,c) == SHIELDT
-                EL(r,DEFENSE_BOOST_COL) = randi([2 10]);
+                EL(r,DEFENSE_BOOST_COL) = randi([5 10]);
             elseif EL(r,c) == BOOTT
-                EL(r,SPEED_BOOST_COL) = randi([2 10]);
+                EL(r,SPEED_BOOST_COL) = randi([5 10]);
             end
         elseif c == 2
             EL(r,c) = randi([2 10]);
-        elseif c==3
+        elseif c == 3
             EL(r,c) = randi([1 10]);
         end
         
@@ -93,11 +93,12 @@ end
 World{EL(2,X_COL), EL(2,Y_COL)} = Door;
 
 % Start Play
+Health = 1;
 Game = 1;
 if SOUND == 1
     play(Theme)   % Plays the song
 end
-while Game == 1
+while Game == 1 && Health == 1
    clc;
    disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
    if EL(PLAYERT,HEALTH_COL) == 0
@@ -133,6 +134,7 @@ for r = 1:1:size(EL)
             %Insert Combat Block Here
             while EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT
                 choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
+                clc;
                 chance = randi([1 10]);
                 if choice == 1 && chance > 4 %60 percent chance of dealing a good hit
                     damagedealt = floor((EL(PLAYERT,ATTACK_COL)/randi([1 10])));
@@ -158,9 +160,6 @@ for r = 1:1:size(EL)
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
                     EL(row,Health_COL) = EL(row,HEALTH_COL)- .75*damagetaken;
                     fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f\n',damagetaken,.5*damagetaken);
-               if EL(PLAYERT,HEALTH_COL) == 0 || EL(row,HEALTH_COL)
-                   break;
-               end
                elseif choice == 3 || EL(PLAYERT,SPEED_COL) > 0
                    EL(PLAYERT,SPEED_COL) = EL(PLAYERT,SPEED_COL) - 10;
                    EL(PLAYERT,X_COL) = EL(PLAYERT,X_COL)+1;
@@ -192,6 +191,11 @@ for r = 1:1:size(EL)
                    EL(row,ATTACK_COL) = EL(row,ATTACK_COL)-EL(row,ATTACK_COL);
                    fprintf('The monster is so awed by your sick moves he is ashamed of himself and commits sudoku. Congrats. Jerk.\n')
                end
+               if EL(PLAYERT,HEALTH_COL) <= 0 || EL(row,HEALTH_COL) <= 0
+                   Health = 0;
+                   break;
+               end
+               disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
             end
             if EL(row,TYPE) == 5
                 if SOUND == 1
@@ -338,8 +342,13 @@ end
 if SOUND == 1
     stop(Theme) % Stops the song
 end
-close all;
-GameMaster = menu('Congratulations! You won the game! Would you like to play again?','Yes','No');
+if Health == 0
+  close all;
+  GameMaster = menu('You have died a warriors death. Would you like to play again?','Yes','No');
+else
+  close all;
+  GameMaster = menu('Congratulations! You won the game! Would you like to play again?','Yes','No');  
+end
 end
 clear all;
 clc;
