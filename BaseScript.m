@@ -132,7 +132,7 @@ imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{
 
 for r = 1:1:size(EL)
     for row = 2:1:size(EL)
-        if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)
+        if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL) && EL(row,TYPE) ~= 2
             %Insert Combat Block Here
             while EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT
                 choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
