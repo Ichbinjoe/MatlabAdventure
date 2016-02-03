@@ -191,7 +191,7 @@ for r = 1:1:size(EL)
                end
                monsterc = randi([0 100]);
                if monsterc < 5 && choice ~=2 && choice ~= 3
-                   EL(row,ATTACK_COL) = EL(row,ATTACK_COL)-EL(row,ATTACK_COL);
+                   EL(row,HEALTH_COL) = 0;
                    fprintf('The monster is so awed by your sick moves he is ashamed of himself and commits sudoku. Congrats. Jerk.\n')
                end
                if EL(PLAYERT,HEALTH_COL) <= 0 || EL(row,HEALTH_COL) <= 0
