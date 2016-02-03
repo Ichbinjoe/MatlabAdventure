@@ -6,7 +6,7 @@ load Adventure   % Loads the board (World - 10x10 cell array) along with a numbe
 warning('off','all'); % turns off all warning messages
 % Definitions
 
-SOUND = 0;
+SOUND = menu('Would you like audio?','Yes','No');
 
 % Type definitions
 PLAYERT = 1;
@@ -136,6 +136,8 @@ for r = 1:1:size(EL)
             %Insert Combat Block Here
             while (EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT) 
                 if EL(row,HEALTH_COL) <= 0 || EL(PLAYERT,HEALTH_COL) <= 0
+                    EL(row, X_COL) = 11;
+                    EL(row,Y_COL) = 11;
                     fprintf('Monster Health: %i. Monster defeated!!',EL(row,HEALTH_COL));
                     break;
                 end
