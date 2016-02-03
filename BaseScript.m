@@ -175,19 +175,19 @@ for r = 1:1:size(EL)
                if monsterc > 4 && choice ~= 2 && choice ~= 3
                    damagedealt = (randi([1 10])/10)*EL(row,ATTACK_COL);
                    EL(PLAYERT,DEFENSE_COL) = EL(PLAYERT,DEFENSE_COL) - damagedealt;
-                   fprintf('Monster grabs your shield at your shield and removes %i defense\n',damagedealt);
+                   fprintf('Monster grabs your shield at your shield and removes %0.2f defense\n',damagedealt);
                    if EL(PLAYERT,DEFENSE_COL) == 0
                    EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - damagedealt;
-                   fprintf('The monster grabs your battered shield and stabs over it. He decreases your health by %i\n',damagedealt);
+                   fprintf('The monster grabs your battered shield and stabs over it. He decreases your health by %0.2f\n',damagedealt);
                    end
                elseif monsterc < 4 && choice ~= 2 && choice ~=3
                    damagedealt = (randi([1 10])/10)*EL(row,ATTACK_COL);
                    EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - damagedealt;
-                   fprintf('He stabs at your face and deals %i damage. Why do you heroes never wear helmets?\n',damagedealt);
+                   fprintf('He stabs at your face and deals %0.2f damage. Why do you heroes never wear helmets?\n',damagedealt);
                elseif monsterc < 2 && choice ~= 2 && choice ~= 3
                    damagedealt = (randi([1 6])/10)*EL(row,ATTACK_COL);
                    EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - damagedealt;
-                   fprintf('The monster decides to use a bow on you. You take an arrow to the knee and lose %i health.\n',damagedealt);
+                   fprintf('The monster decides to use a bow on you. You take an arrow to the knee and lose %0.2f health.\n',damagedealt);
                end
                monsterc = randi([0 100]);
                if monsterc < 5 && choice ~=2 && choice ~= 3
