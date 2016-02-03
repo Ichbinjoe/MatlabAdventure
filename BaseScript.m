@@ -153,6 +153,9 @@ for r = 1:1:size(EL)
                     damagetaken = floor((EL(PLAYERT,DEFENSE_COL)/randi([1 10])));
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
                     fprintf('You planted your shield firmly and protected yourself against a brutal blow! \nYour shield lost %0.2f durability\n',damagedealt,EL(row,DEFENSE_COL));
+                    if EL(row,DEFENSE_COL) < 0
+                        EL(row, DEFENSE_COL) = 0;
+                    end
                 elseif choice == 2 && chance < 4
                     damagetaken = floor((EL(PLAYERT,DEFENSE_COL)/chance));
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
