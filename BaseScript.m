@@ -134,7 +134,11 @@ for r = 1:1:size(EL)
     for row = 2:1:size(EL)
         if (EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)) && EL(row,TYPE) ~= 2
             %Insert Combat Block Here
-            while (EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT) && EL(row,HEALTH_COL) > 0 && EL(PLAYERT,HEALTH_COL) > 0
+            while (EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT) 
+                if EL(row,HEALTH_COL) <= 0 || EL(PLAYERT,HEALTH_COL) <= 0
+                    fprintf('Monster Health: %i. Monster defeated!!',EL(row,HEALTH_COL));
+                    break;
+                end
                 choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
                 clc;
                 chance = randi([1 10]);
