@@ -205,10 +205,10 @@ for r = 1:1:size(EL)
                 end
                 PreviousHealth = EL(PLAYERT, HEALTH_COL);
                 EL(PLAYERT, HEALTH_COL) = EL(PLAYERT, HEALTH_COL) + EL(row,HEALTH_COL); %Checks pickup type for Health, adds the random health value to the player health column (keeps it less than 20)
+                fprintf('Health Vat added %0.2f health!',EL(PLAYERT,HEALTH_COL) - PreviousHealth)
                 if EL(PLAYERT, HEALTH_COL) > 20
                     EL(PLAYERT, HEALTH_COL) = 20;
                 end
-                fprintf('Health Vat added %i health!',EL(PLAYERT,HEALTH_COL) - PreviousHealth)
             elseif EL(row,TYPE) == 6
                 PreviousAttack = EL(PLAYERT,ATTACK_BOOST_COL);
                 if SOUND == 1
@@ -219,7 +219,7 @@ for r = 1:1:size(EL)
                 if EL(PLAYERT, ATTACK_COL) > 20
                     EL(PLAYERT, ATTACK_COL) = 20;
                 end
-                fprintf('Sword added %i attack!',EL(PLAYERT,ATTACK_BOOST_COL) - PreviousAttack)
+                fprintf('Sword added %0.2 attack!',EL(PLAYERT,ATTACK_BOOST_COL) - PreviousAttack)
             elseif EL(row,TYPE) == 7
                 PreviousDefense = EL(PLAYERT, DEFENSE_BOOST_COL);
                 if SOUND == 1
@@ -227,17 +227,17 @@ for r = 1:1:size(EL)
                 end
                 EL(PLAYERT, DEFENSE_BOOST_COL) = EL(PLAYERT, DEFENSE_BOOST_COL) + EL(row,DEFENSE_BOOST_COL); %Checks pickup type for shield, adds the random value to the player defense boost column, which is then added to the player defense (keeps it less than 20)
                 EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + (EL(PLAYERT,DEFENSE_BOOST_COL)-PreviousDefense);
+                fprintf('Shield added %0.2 defense!',EL(PLAYERT,DEFENSE_BOOST_COL) - PreviousDefense)                
                 if EL(PLAYERT, DEFENSE_COL) > 20
                     EL(PLAYERT, DEFENSE_COL) = 20;
                 end
-                fprintf('Shield added %i defense!',EL(PLAYERT,DEFENSE_BOOST_COL) - PreviousDefense)
             elseif EL(row,TYPE) == 8
                 PreviousSpeed = EL(PLAYERT, SPEED_BOOST_COL);
                 EL(PLAYERT, SPEED_BOOST_COL) = EL(PLAYERT, SPEED_BOOST_COL) + EL(row,SPEED_BOOST_COL); %Checks pickup type for boots, adds the random value to the player speed boost column column, which is then added to the player speed column (keeps it less than 20)
+                fprintf('You picked up %0.2 speed boost to use in battle!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)                
                 if EL(PLAYERT, SPEED_COL) > 20
                     EL(PLAYERT, SPEED_COL) = 20;
                 end
-                fprintf('You picked up %i speed boost to use in battle!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)
             end
             World{EL(row,X_COL), EL(row,Y_COL)} = Blank;
             World{EL(row,X_COL), EL(row,Y_COL)} = IMG{PLAYERT};
