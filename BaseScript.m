@@ -134,7 +134,7 @@ for r = 1:1:size(EL)
     for row = 2:1:size(EL)
         if (EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)) && EL(row,TYPE) ~= 2
             %Insert Combat Block Here
-            while EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT
+            while (EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT) && EL(row,HEALTH_COL) > 0 && EL(PLAYERT,HEALTH_COL) > 0
                 choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
                 clc;
                 chance = randi([1 10]);
@@ -193,10 +193,6 @@ for r = 1:1:size(EL)
                if monsterc < 5 && choice ~=2 && choice ~= 3
                    EL(row,ATTACK_COL) = EL(row,ATTACK_COL)-EL(row,ATTACK_COL);
                    fprintf('The monster is so awed by your sick moves he is ashamed of himself and commits sudoku. Congrats. Jerk.\n')
-               end
-               if EL(PLAYERT,HEALTH_COL) <= 0 || EL(row,HEALTH_COL) <= 0
-                   Health = 0;
-                   break;
                end
                disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
             end
