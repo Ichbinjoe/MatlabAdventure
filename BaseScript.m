@@ -133,37 +133,65 @@ for r = 1:1:size(EL)
             %Insert Combat Block Here
             while EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT
                 choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
-                chance = randi([0 20]);
+                chance = randi([1 10]);
                 if choice == 1 && chance > 4 %60 percent chance of dealing a good hit
-                    damagedealt = (randi([0 20])/EL(PLAYERT,ATTACK_COL));
+                    damagedealt = floor((EL(PLAYERT,ATTACK_COL)/randi([1 10])));
                     EL(row,HEALTH_COL) = EL(row,HEALTH_COL) - damagedealt;
-                    fprintf('You landed a great hit against the monster and did %0.2f damage! Monster health: %0.2f',damagedealt,EL(row,HEALTH_COL));
+                    fprintf('You landed a great hit against the monster and did %0.2f damage! Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
                 elseif choice == 1 && chance < 4 %20 percent chance of a glancing shot
-                    damagedealt = (chance/EL(PLAYERT,ATTACK_COL));
+                    damagedealt = floor((EL(PLAYERT,ATTACK_COL)/chance));
                     EL(row,HEALTH_COL) = EL(row,HEALTH_COL) - damagedealt;
-                    fprintf('You stumbled as you swung and did %0.2f damage! Monster health: %0.2f',damagedealt,EL(row,HEALTH_COL));
+                    fprintf('You stumbled as you swung and did %0.2f damage! Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
                 elseif choice == 1 && chance < 2 %20 percent chance of missing entirely
                     damagedealt = 0;
-                    fprintf('What an amatuer! You missed and did %0.2f damage! Monster health: %0.2f',damagedealt,EL(row,HEALTH_COL));
+                    fprintf('What an amatuer! You missed and did %0.2f damage! Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
                 elseif choice == 2 && chance > 4
-                    damagetaken = (randi([0 20])/EL(PLAYERT,DEFENSE_COL));
+                    damagetaken = floor((EL(PLAYERT,DEFENSE_COL)/randi([1 10])));
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
-                    fprintf('You planted your shield firmly and protected yourself against a brutal blow! Your shield lost %0.2f durability',damagedealt,EL(row,DEFENSE_COL));
+                    fprintf('You planted your shield firmly and protected yourself against a brutal blow! Your shield lost %0.2f durability\n',damagedealt,EL(row,DEFENSE_COL));
                 elseif choice == 2 && chance < 4
-                    damagetaken = (chance/EL(PLAYERT,ATTACK_COL));
+                    damagetaken = floor((EL(PLAYERT,DEFENSE_COL)/chance));
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
-                    EL(row,Health_COL) = EL(row,HEALTH_COL)- .25*damagetaken;\
-                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f',damagetaken,.5*damagetaken);
+                    fprintf('You raise your shield but just barely block the blow. You get the wind knocked out of you and you lose %0.2f Defense.\n',damagetaken);
                elseif choice == 2 && chance < 2
-                    damagetaken = (chance/EL(PLAYERT,ATTACK_COL));
+                    damagetaken = floor(EL(PLAYERT,DEFENSE_COL)/chance);
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
                     EL(row,Health_COL) = EL(row,HEALTH_COL)- .75*damagetaken;
-                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f',damagetaken,.5*damagetaken);
-                    
-                elseif
-                    
+                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f\n',damagetaken,.5*damagetaken);
+               if EL(PLAYERT,HEALTH_COL) == 0 || EL(row,HEALTH_COL)
+                   break;
+               end
+               elseif choice == 3 || EL(PLAYERT,SPEED_COL) > 0
+                   EL(PLAYERT,SPEED_COL) = EL(PLAYERT,SPEED_COL) - 10;
+                   EL(PLAYERT,X_COL) = EL(PLAYERT,X_COL)+1;
+                   if EL(PLAYERT,SPEED_COL) < 0
+                      EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - 2;
+                   end
+                   break;
                 end
-    
+               monsterc = randi([0 10]);
+               if monsterc > 4 && choice ~= 2 && choice ~= 3
+                   damagedealt = (randi([1 10])/10)*EL(row,ATTACK_COL);
+                   EL(PLAYERT,DEFENSE_COL) = EL(PLAYERT,DEFENSE_COL) - damagedealt;
+                   fprintf('Monster grabs your shield at your shield and removes %i defense\n',damagedealt);
+                   if EL(PLAYERT,DEFENSE_COL) == 0
+                   EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - damagedealt;
+                   fprintf('The monster grabs your battered shield and stabs over it. He decreases your health by %i\n',damagedealt);
+                   end
+               elseif monsterc < 4 && choice ~= 2 && choice ~=3
+                   damagedealt = (randi([1 10])/10)*EL(row,ATTACK_COL);
+                   EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - damagedealt;
+                   fprintf('He stabs at your face and deals %i damage. Why do you heroes never wear helmets?\n',damagedealt);
+               elseif monsterc < 2 && choice ~= 2 && choice ~= 3
+                   damagedealt = (randi([1 6])/10)*EL(row,ATTACK_COL);
+                   EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - damagedealt;
+                   fprintf('The monster decides to use a bow on you. You take an arrow to the knee and lose %i health.\n',damagedealt);
+               end
+               monsterc = randi([0 100]);
+               if monsterc < 5 && choice ~=2 && choice ~= 3
+                   EL(row,ATTACK_COL) = EL(row,ATTACK_COL)-EL(row,ATTACK_COL);
+                   fprintf('The monster is so awed by your sick moves he is ashamed of himself and commits sudoku. Congrats. Jerk.\n')
+               end
             end
             if EL(row,TYPE) == 5
                 if SOUND == 1
@@ -202,6 +230,9 @@ for r = 1:1:size(EL)
             elseif EL(row,TYPE) == 8
                 PreviousSpeed = EL(PLAYERT, SPEED_BOOST_COL);
                 EL(PLAYERT, SPEED_BOOST_COL) = EL(PLAYERT, SPEED_BOOST_COL) + EL(row,SPEED_BOOST_COL); %Checks pickup type for boots, adds the random value to the player speed boost column column, which is then added to the player speed column (keeps it less than 20)
+                if EL(PLAYERT, SPEED_COL) > 20
+                    EL(PLAYERT, SPEED_COL) = 20;
+                end
                 fprintf('You picked up %i speed boost to use in battle!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)
             end
             World{EL(row,X_COL), EL(row,Y_COL)} = Blank;
