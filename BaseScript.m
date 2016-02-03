@@ -166,6 +166,7 @@ for r = 1:1:size(EL)
                    EL(PLAYERT,SPEED_COL) = EL(PLAYERT,SPEED_COL) - 10;
                    EL(PLAYERT,X_COL) = EL(PLAYERT,X_COL)+1;
                    if EL(PLAYERT,SPEED_COL) < 0
+                      EL(PLAYERT,SPEED_COL) = 0;
                       EL(PLAYERT,HEALTH_COL) = EL(PLAYERT,HEALTH_COL) - 2;
                    end
                    break;
