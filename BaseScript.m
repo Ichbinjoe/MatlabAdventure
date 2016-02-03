@@ -105,7 +105,7 @@ while Game == 1 && Health == 1
    disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
    if EL(PLAYERT,HEALTH_COL) == 0
        Game = 0;
-   elseif (EL(PLAYERT,X_COL) == EL(DOORT,X_COL)) && (EL(PLAYERT,Y_COL) == EL(DOORT,Y_COL)) && EL(SUPERMONSTERT,HEALTH_COL) == 0
+   elseif (EL(PLAYERT,X_COL) == EL(DOORT,X_COL)) && (EL(PLAYERT,Y_COL) == EL(DOORT,Y_COL))
        Game = 0;
    end
    World{EL(1,X_COL),EL(1,Y_COL)} = Player; %indexes into World location for player based on x y coordinates given in the Entity List. Assigns Cell values to the values in the Player image (Test)
@@ -132,7 +132,7 @@ imshow([World{1,:};World{2,:};World{3,:};World{4,:};World{5,:};World{6,:};World{
 
 for r = 1:1:size(EL)
     for row = 2:1:size(EL)
-        if EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL) && EL(row,TYPE) ~= 2
+        if (EL(PLAYERT,X_COL) == EL(row,X_COL) && EL(PLAYERT,Y_COL) == EL(row,Y_COL)) && EL(row,TYPE) ~= 2
             %Insert Combat Block Here
             while EL(row,TYPE) == MONSTERT || EL(row,TYPE) == SUPERMONSTERT
                 choice = menu('You have stumbled upon a monster! What do you do?','Attack','Defend','Run');
