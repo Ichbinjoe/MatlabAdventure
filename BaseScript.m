@@ -100,7 +100,7 @@ if SOUND == 1
 end
 while Game == 1 && Health == 1
    World{EL(2,X_COL), EL(2,Y_COL)} = Door;
-   World{EL(3,X_COL), EL(3,Y_COL)} = Door;
+   World{EL(3,X_COL), EL(3,Y_COL)} = Monster-60;
    clc;
    disp 'Health: ';disp(EL(PLAYERT,HEALTH_COL));disp ' Attack: ';disp(EL(PLAYERT,ATTACK_COL));disp ' Defense: ';disp(EL(PLAYERT,DEFENSE_COL));disp ' Speed: ';disp(EL(PLAYERT,SPEED_COL));
    if EL(PLAYERT,HEALTH_COL) == 0
