@@ -141,18 +141,18 @@ for r = 1:1:size(EL)
                 if choice == 1 && chance > 4 %60 percent chance of dealing a good hit
                     damagedealt = floor((EL(PLAYERT,ATTACK_COL)/randi([1 10])));
                     EL(row,HEALTH_COL) = EL(row,HEALTH_COL) - damagedealt;
-                    fprintf('You landed a great hit against the monster and did %0.2f damage! Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
+                    fprintf('You landed a great hit against the monster and did %0.2f damage!\n Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
                 elseif choice == 1 && chance < 4 %20 percent chance of a glancing shot
                     damagedealt = floor((EL(PLAYERT,ATTACK_COL)/chance));
                     EL(row,HEALTH_COL) = EL(row,HEALTH_COL) - damagedealt;
-                    fprintf('You stumbled as you swung and did %0.2f damage! Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
+                    fprintf('You stumbled as you swung and did %0.2f damage! \nMonster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
                 elseif choice == 1 && chance < 2 %20 percent chance of missing entirely
                     damagedealt = 0;
-                    fprintf('What an amatuer! You missed and did %0.2f damage! Monster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
+                    fprintf('What an amatuer! You missed and did %0.2f damage! \nMonster health: %0.2f\n',damagedealt,EL(row,HEALTH_COL));
                 elseif choice == 2 && chance > 4
                     damagetaken = floor((EL(PLAYERT,DEFENSE_COL)/randi([1 10])));
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
-                    fprintf('You planted your shield firmly and protected yourself against a brutal blow! Your shield lost %0.2f durability\n',damagedealt,EL(row,DEFENSE_COL));
+                    fprintf('You planted your shield firmly and protected yourself against a brutal blow! \nYour shield lost %0.2f durability\n',damagedealt,EL(row,DEFENSE_COL));
                 elseif choice == 2 && chance < 4
                     damagetaken = floor((EL(PLAYERT,DEFENSE_COL)/chance));
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
@@ -161,7 +161,7 @@ for r = 1:1:size(EL)
                     damagetaken = floor(EL(PLAYERT,DEFENSE_COL)/chance);
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
                     EL(row,HEALTH_COL) = EL(row,HEALTH_COL)- .75*damagetaken;
-                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f\n',damagetaken,.5*damagetaken);
+                    fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. \nDefense lost: %0.2f. Health lost: %0.2f\n',damagetaken,.5*damagetaken);
                elseif choice == 3 || EL(PLAYERT,SPEED_COL) > 0
                    EL(PLAYERT,SPEED_COL) = EL(PLAYERT,SPEED_COL) - 10;
                    EL(PLAYERT,X_COL) = EL(PLAYERT,X_COL)+1;
