@@ -212,6 +212,8 @@ for r = 1:1:size(EL)
                 fprintf('Health Vat added %0.2f health!',EL(PLAYERT,HEALTH_COL) - PreviousHealth)
                 if EL(PLAYERT, HEALTH_COL) > 20
                     EL(PLAYERT, HEALTH_COL) = 20;
+                elseif EL(PLAYERT, HEALTH_COL) < 0
+                    EL(PLAYERT, HEALTH_COL) = 0;
                 end
             elseif EL(row,TYPE) == 6
                 PreviousAttack = EL(PLAYERT,ATTACK_BOOST_COL);
@@ -222,6 +224,8 @@ for r = 1:1:size(EL)
                 EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + (EL(PLAYERT,ATTACK_BOOST_COL)-PreviousAttack);
                 if EL(PLAYERT, ATTACK_COL) > 20
                     EL(PLAYERT, ATTACK_COL) = 20;
+                elseif EL(PLAYERT, ATTACK_COL) < 0
+                    EL(PLAYERT, ATTACK_COL) = 0;
                 end
                 fprintf('Sword added %0.2 attack!',EL(PLAYERT,ATTACK_BOOST_COL) - PreviousAttack)
             elseif EL(row,TYPE) == 7
@@ -234,13 +238,17 @@ for r = 1:1:size(EL)
                 fprintf('Shield added %0.2 defense!',EL(PLAYERT,DEFENSE_BOOST_COL) - PreviousDefense)                
                 if EL(PLAYERT, DEFENSE_COL) > 20
                     EL(PLAYERT, DEFENSE_COL) = 20;
+                elseif EL(PLAYERT, DEFENSE_COL) < 0
+                    EL(PLAYERT, DEFENSE_COL) = 0;
                 end
             elseif EL(row,TYPE) == 8
                 PreviousSpeed = EL(PLAYERT, SPEED_BOOST_COL);
-                EL(PLAYERT, SPEED_BOOST_COL) = EL(PLAYERT, SPEED_BOOST_COL) + EL(row,SPEED_BOOST_COL); %Checks pickup type for boots, adds the random value to the player speed boost column column, which is then added to the player speed column (keeps it less than 20)
+                EL(PLAYERT, SPEED_COL) = EL(PLAYERT, SPEED_COL) + EL(row,SPEED_BOOST_COL); %Checks pickup type for boots, adds the random value to the player speed boost column column, which is then added to the player speed column (keeps it less than 20)
                 fprintf('You picked up %0.2 speed boost to use in battle!',EL(PLAYERT,SPEED_BOOST_COL) - PreviousSpeed)                
                 if EL(PLAYERT, SPEED_COL) > 20
                     EL(PLAYERT, SPEED_COL) = 20;
+                elseif EL(PLAYERT, SPEED_COL) < 0
+                    EL(PLAYERT, SPEED_COL) = 0;
                 end
             end
             World{EL(row,X_COL), EL(row,Y_COL)} = Blank;
