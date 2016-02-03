@@ -160,7 +160,7 @@ for r = 1:1:size(EL)
                elseif choice == 2 && chance < 2
                     damagetaken = floor(EL(PLAYERT,DEFENSE_COL)/chance);
                     EL(row,DEFENSE_COL) = EL(row,DEFENSE_COL) - damagetaken;
-                    EL(row,Health_COL) = EL(row,HEALTH_COL)- .75*damagetaken;
+                    EL(row,HEALTH_COL) = EL(row,HEALTH_COL)- .75*damagetaken;
                     fprintf('You planted your shield but failed to cover your left shoulder. Your left shoulder is now gone, as is your shield. Defense lost: %0.2f. Health lost: %0.2f\n',damagetaken,.5*damagetaken);
                elseif choice == 3 || EL(PLAYERT,SPEED_COL) > 0
                    EL(PLAYERT,SPEED_COL) = EL(PLAYERT,SPEED_COL) - 10;
