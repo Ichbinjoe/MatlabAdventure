@@ -290,7 +290,7 @@ for i = 1:length(EL)
            end
            if VALID == 1
                px = dx + player(X_COL);
-               py = dx + player(Y_COL);
+               py = dy + player(Y_COL);
                if px > 10 || px < 1 || py > 10 || py < 1
                    VALID = 0;
                end
