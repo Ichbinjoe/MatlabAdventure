@@ -5,7 +5,7 @@ clear all;
 load Adventure   % Loads the board (World - 10x10 cell array) along with a number of different image, shown below.
 warning('off','all'); % turns off all warning messages
 % Definitions
-
+msgbox('Warning: It has been found that the some audio files are not properly read on certain operating systems, and this may cause errors. This is not an error due to this script, but rather due to incompatability of the audio file format with the users chosen operating system. If choosing to play with audio yields errors, restart the game and choose no audio. Thanks for playing!')
 SOUND = menu('Would you like audio?','Yes','No');
 
 % Type definitions
@@ -70,11 +70,11 @@ if SOUND == 1
     Theme = audioplayer(.3*y,Fs);  
     % Saves as song using sampling rate, Fs
     [y Fs] = audioread('Sword.mp3');
-    Sword = audioplayer(.1*y,Fs);
+    Sword1 = audioplayer(.1*y,Fs);
     [y Fs] = audioread('Shield.wav');
-    Shield = audioplayer(.1*y,Fs);
+    Shield1 = audioplayer(.1*y,Fs);
     [y Fs] = audioread('Health.wav');
-    Health = audioplayer(.5*y,Fs);
+    Health1 = audioplayer(.5*y,Fs);
 end
 %The use of shuffled x y coordinates leads to some repitition in entity
 %location. This is resolved by the random generation. While an entity will
@@ -207,7 +207,7 @@ for r = 1:1:size(EL)
             end
             if EL(row,TYPE) == 5
                 if SOUND == 1
-                    play(Health)
+                    play(Health1)
                 end
                 PreviousHealth = EL(PLAYERT, HEALTH_COL);
                 EL(PLAYERT, HEALTH_COL) = EL(PLAYERT, HEALTH_COL) + EL(row,HEALTH_COL); %Checks pickup type for Health, adds the random health value to the player health column (keeps it less than 20)
@@ -220,7 +220,7 @@ for r = 1:1:size(EL)
             elseif EL(row,TYPE) == 6
                 PreviousAttack = EL(PLAYERT,ATTACK_BOOST_COL);
                 if SOUND == 1
-                    play(Sword)
+                    play(Sword1)
                 end
                 EL(PLAYERT, ATTACK_BOOST_COL) = EL(PLAYERT, ATTACK_BOOST_COL) + EL(row,ATTACK_BOOST_COL); %Checks pickup type for sword, adds the random value to the player attack boost column, which is then added to the attack (keeps it less than 20)
                 EL(PLAYERT, ATTACK_COL) = EL(PLAYERT, ATTACK_COL) + (EL(PLAYERT,ATTACK_BOOST_COL)-PreviousAttack);
@@ -233,7 +233,7 @@ for r = 1:1:size(EL)
             elseif EL(row,TYPE) == 7
                 PreviousDefense = EL(PLAYERT, DEFENSE_BOOST_COL);
                 if SOUND == 1
-                    play(Shield)
+                    play(Shield1)
                 end
                 EL(PLAYERT, DEFENSE_BOOST_COL) = EL(PLAYERT, DEFENSE_BOOST_COL) + EL(row,DEFENSE_BOOST_COL); %Checks pickup type for shield, adds the random value to the player defense boost column, which is then added to the player defense (keeps it less than 20)
                 EL(PLAYERT, DEFENSE_COL) = EL(PLAYERT, DEFENSE_COL) + (EL(PLAYERT,DEFENSE_BOOST_COL)-PreviousDefense);
